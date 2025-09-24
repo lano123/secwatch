@@ -82,7 +82,28 @@
       </button>
     </div>
   </header>
-
+  <!-- Mobile nav panel -->
+  <div id="mobileNav" class="md:hidden fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-black/40" id="mobileBackdrop"></div>
+    <nav class="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800 p-6 shadow-xl">
+      <div class="flex items-center justify-between">
+        <span class="font-semibold" data-i18n="brand">SecWatch</span>
+        <button id="mobileClose" class="rounded-md border border-zinc-200 dark:border-zinc-800 p-2" aria-label="Close menu">✕</button>
+      </div>
+      <ul class="mt-6 space-y-4 text-base font-medium">
+        <li><a href="#home" class="block hover:text-brand" data-i18n="nav_home">Home</a></li>
+        <li><a href="#services" class="block hover:text-brand" data-i18n="nav_services">Services</a></li>
+        <li><a href="#process" class="block hover:text-brand" data-i18n="nav_process">How we work</a></li>
+        <li><a href="#pricing" class="block hover:text-brand" data-i18n="nav_pricing">Pricing</a></li>
+        <li><a href="#about" class="block hover:text-brand" data-i18n="nav_about">About</a></li>
+        <li><a href="#contact" class="block hover:text-brand" data-i18n="nav_contact">Contact</a></li>
+      </ul>
+      <div class="mt-8 flex items-center gap-3">
+        <button id="langToggleMobile" class="rounded-md border border-zinc-200 dark:border-zinc-800 px-3 py-1.5">EN</button>
+        <a href="#contact" class="inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-4 py-2" data-i18n="cta_nav">Request audit</a>
+      </div>
+    </nav>
+  </div>
   <!-- Hero -->
   <section id="home" class="relative overflow-hidden grid-bg">
     <div class="absolute inset-0 -z-10 opacity-20 dark:opacity-30" aria-hidden="true">
