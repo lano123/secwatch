@@ -404,19 +404,65 @@
       syncThemeIcon();
     });
 
-    // Language toggle
-    const langBtn = document.getElementById('langToggle');
-    const startLang = localStorage.getItem('lang') || 'en';
-    langBtn.textContent = startLang.toUpperCase();
-    applyLang(startLang);
+// Language toggle (desktop)
+const langBtn = document.getElementById('langToggle');
+const startLang = localStorage.getItem('lang') || 'en';
+langBtn.textContent = startLang.toUpperCase();
+applyLang(startLang);
+langBtn.addEventListener('click', () => {
+  const current = localStorage.getItem('lang') || 'en';
+  const next = current === 'en' ? 'sk' : 'en';
+  applyLang(next);
+  langBtn.textContent = next.toUpperCase();
+  const mBtn = document.getElementById('langToggleMobile');
+  if (mBtn) mBtn.textContent = next.toUpperCase();
+});
 
-    langBtn.addEventListener('click', () => {
-      const current = localStorage.getItem('lang') || 'en';
-      const next = current === 'en' ? 'sk' : 'en';
-      applyLang(next);
-      langBtn.textContent = next.toUpperCase();
-    });
+// Language toggle (mobile)
+const langBtnM = document.getElementById('langToggleMobile');
+if (langBtnM){
+  langBtnM.textContent = (localStorage.getItem('lang')||'en').toUpperCase();
+  langBtnM.addEventListener('click', () => {
+    const current = localStorage.getItem('lang') || 'en';
+    const next = current === 'en' ? 'sk' : 'en';
+    applyLang(next);
+    langBtn.textContent = next.toUpperCase();
+    langBtnM.textContent = next.toUpperCase();
+  });
+}
 
+// Mobile menu toggle
+const menuBtn = document.getElementById('menuBtn');
+const mobileNav = document.getElementById('mobileNav');
+const mobileClose = document.getElementById('mobileClose');
+const backdrop = document.getElementById('mobileBackdrop');
+const menuIcon = document.getElementById('menuIcon');
+const closeIcon = document.getElementById('closeIcon');
+
+function openMenu(){
+  mobileNav.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  menuBtn.setAttribute('aria-expanded','true');
+  if(menuIcon) menuIcon.classList.add('hidden');
+  if(closeIcon) closeIcon.classList.remove('hidden');
+}
+function closeMenu(){
+  mobileNav.classList.add('hidden');
+  document.body.style.overflow = '';
+  menuBtn.setAttribute('aria-expanded','false');
+  if(menuIcon) menuIcon.classList.remove('hidden');
+  if(closeIcon) closeIcon.classList.add('hidden');
+}
+if(menuBtn){
+  menuBtn.addEventListener('click', ()=> mobileNav.classList.contains('hidden') ? openMenu() : closeMenu());
+}
+if (mobileClose) mobileClose.addEventListener('click', closeMenu);
+if (backdrop) backdrop.addEventListener('click', closeMenu);
+// Close when clicking a link
+document.querySelectorAll('#mobileNav a').forEach(a=> a.addEventListener('click', closeMenu));
+// ESC to close
+document.addEventListener('keydown', (e)=>{ if (e.key==='Escape') closeMenu(); });
+    
     // init
     syncThemeIcon();
     document.getElementById('year').textContent = new Date().getFullYear();
