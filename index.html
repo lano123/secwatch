@@ -76,10 +76,26 @@
           <a href="#contact" class="ml-1 inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-4 py-2 hover:brightness-110 active:brightness-95" data-i18n="cta_nav">Request audit</a>
         </div>
       </nav>
-      <button id="menuBtn" class="md:hidden rounded-md border border-zinc-200 dark:border-zinc-800 p-2" aria-label="Menu" aria-expanded="false" aria-controls="mobileNav">
-        <svg id="menuIcon" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        <svg id="closeIcon" class="h-5 w-5 hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6l12 12M6 18L18 6"/></svg>
-      </button>
+        <button
+          id="menuBtn"
+          class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg
+                 border border-zinc-300 dark:border-zinc-700
+                 bg-white/80 dark:bg-zinc-900/80
+                 text-zinc-900 dark:text-zinc-100
+                 shadow-sm active:scale-[0.98] transition"
+          aria-label="Menu"
+          aria-expanded="false"
+          aria-controls="mobileNav"
+        >
+          <!-- hamburger ikonka ako STROKE, nie fill -->
+          <svg id="menuIcon" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+          </svg>
+          <svg id="closeIcon" class="h-5 w-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 6l12 12M6 18L18 6" stroke-linecap="round"/>
+          </svg>
+          <span class="sr-only">Open menu</span>
+        </button>
     </div>
   </header>
   <!-- Mobile nav panel -->
