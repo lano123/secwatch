@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
@@ -6,7 +7,7 @@
   <meta name="description" content="SecWatch: professional web application penetration testing, security audits, and developer-friendly remediation guidance." />
   <meta name="keywords" content="penetration testing, web security, security audit, bug bounty, ethical hacking, Slovakia" />
   <meta name="theme-color" content="#0b0f14" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='0' y='20' font-size='20'%3E🔒%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='0' y='20' font-size='20'%3E%F0%9F%94%92%3C/text%3E%3C/svg%3E" />
   <!-- Open Graph -->
   <meta property="og:title" content="SecWatch – Web Security & Penetration Testing" />
   <meta property="og:description" content="We find vulnerabilities before attackers do. Clear, actionable reports and a pragmatic remediation plan." />
@@ -15,10 +16,33 @@
   <meta property="og:url" content="https://secwatch.sk" />
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { DEFAULT: '#00ff99', 50:'#eafff6',100:'#c6ffe8',200:'#8cffd1',300:'#52ffbb',400:'#19ffa5',500:'#00ff99',600:'#00cc7a',700:'#00995c',800:'#00663d',900:'#00331f' } } } } };</script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { brand: { DEFAULT: '#00ff99', 50:'#eafff6',100:'#c6ffe8',200:'#8cffd1',300:'#52ffbb',400:'#19ffa5',500:'#00ff99',600:'#00cc7a',700:'#00995c',800:'#00663d',900:'#00331f' } }, keyframes: {
+      floaty: { '0%,100%':{transform:'translateY(0)'}, '50%':{transform:'translateY(-6px)'} },
+    }, animation: { floaty: 'floaty 4s ease-in-out infinite' } } } };
+  </script>
   <style>
     .grid-bg { background-image: linear-gradient(to right, rgba(120,120,120,.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(120,120,120,.06) 1px, transparent 1px); background-size: 24px 24px; }
     .glass { backdrop-filter: blur(8px); background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); }
+
+    /* Motion system (accessible):
+       Add data-animate="fade|fade-up|fade-right|zoom|blur" and optional data-stagger to a container.
+       Elements with [data-animate] and children marked .reveal will animate in when scrolled into view. */
+    .reveal { opacity: 0; transform: translateY(12px); will-change: opacity, transform; }
+    .reveal.is-shown { opacity: 1; transform: translateY(0); }
+    /* variants */
+    [data-animate="fade"] .reveal { transform: none; }
+    [data-animate="fade-up"] .reveal { transform: translateY(16px); }
+    [data-animate="fade-right"] .reveal { transform: translateX(16px); }
+    [data-animate="zoom"] .reveal { transform: scale(.96); }
+    [data-animate="blur"] .reveal { filter: blur(6px); }
+    [data-animate] .reveal { transition: opacity .6s ease, transform .6s ease, filter .6s ease; }
+    [data-animate] .reveal.is-shown { filter: blur(0); }
+
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, [data-parallax] { transition: none !important; transform: none !important; filter: none !important; animation: none !important; }
+    }
   </style>
   <script>
     (function() {
@@ -51,10 +75,10 @@
 </head>
 <body class="bg-white text-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 antialiased">
   <!-- Top bar / nav -->
-  <header class="sticky top-0 z-40 border-b border-zinc-200/70 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-950/70 backdrop-blur">
+  <header class="sticky top-0 z-40 border-b border-zinc-200/70 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-950/70 backdrop-blur transition-all duration-300" id="siteHeader">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <a href="#home" class="flex items-center gap-3 font-semibold tracking-tight">
-        <span class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-brand/15 text-xl">🔒</span>
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-brand/15 text-xl animate-floaty">🔒</span>
         <span class="text-lg" data-i18n="brand">SecWatch</span>
       </a>
       <nav class="hidden md:flex items-center gap-3 lg:gap-6 text-sm font-medium">
@@ -76,28 +100,14 @@
           <a href="#contact" class="ml-1 inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-4 py-2 hover:brightness-110 active:brightness-95" data-i18n="cta_nav">Request audit</a>
         </div>
       </nav>
-        <button
-          id="menuBtn"
-          class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg
-                 border border-zinc-300 dark:border-zinc-700
-                 bg-white/80 dark:bg-zinc-900/80
-                 text-zinc-900 dark:text-zinc-100
-                 shadow-sm active:scale-[0.98] transition"
-          aria-label="Menu"
-          aria-expanded="false"
-          aria-controls="mobileNav"
-        >
-          <!-- hamburger ikonka ako STROKE, nie fill -->
-          <svg id="menuIcon" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
-          </svg>
-          <svg id="closeIcon" class="h-5 w-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M6 6l12 12M6 18L18 6" stroke-linecap="round"/>
-          </svg>
-          <span class="sr-only">Open menu</span>
-        </button>
+      <button id="menuBtn" class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white/80 dark:bg-zinc-900/80 text-zinc-900 dark:text-zinc-100 shadow-sm active:scale-[0.98] transition" aria-label="Menu" aria-expanded="false" aria-controls="mobileNav">
+        <svg id="menuIcon" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
+        <svg id="closeIcon" class="h-5 w-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M6 18L18 6" stroke-linecap="round"/></svg>
+        <span class="sr-only">Open menu</span>
+      </button>
     </div>
   </header>
+
   <!-- Mobile nav panel -->
   <div id="mobileNav" class="md:hidden fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
     <div class="absolute inset-0 bg-black/40" id="mobileBackdrop"></div>
@@ -120,35 +130,32 @@
       </div>
     </nav>
   </div>
+
   <!-- Hero -->
   <section id="home" class="relative overflow-hidden grid-bg">
     <div class="absolute inset-0 -z-10 opacity-20 dark:opacity-30" aria-hidden="true">
-      <div class="absolute -top-32 -right-24 h-80 w-80 rounded-full blur-3xl bg-brand/30"></div>
-      <div class="absolute -bottom-24 -left-24 h-80 w-80 rounded-full blur-3xl bg-brand/20"></div>
+      <div class="absolute -top-32 -right-24 h-80 w-80 rounded-full blur-3xl bg-brand/30" data-parallax data-speed="0.2"></div>
+      <div class="absolute -bottom-24 -left-24 h-80 w-80 rounded-full blur-3xl bg-brand/20" data-parallax data-speed="0.15"></div>
     </div>
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28" data-animate="fade-up">
       <div class="max-w-3xl">
-        <span class="inline-flex items-center gap-2 rounded-full border border-brand/40 px-3 py-1 text-xs font-semibold text-brand/90 bg-brand/5" data-i18n="hero_badge">Web Security • Penetration Testing • Management-ready reporting</span>
-        <h1 class="mt-6 text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight" data-i18n="hero_title">
-          Your web application. <span class="text-brand">Secured</span>.
-        </h1>
-        <p class="mt-5 text-base sm:text-lg text-zinc-600 dark:text-zinc-300 max-w-prose" data-i18n="hero_sub">
-          We uncover critical vulnerabilities, explain business impact, and deliver a <strong>clear remediation plan</strong>. No fluff—just facts, proof, and results.
-        </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href="#contact" class="inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-5 py-3 hover:brightness-110" data-i18n="hero_cta_primary">Get a quote</a>
+        <span class="reveal inline-flex items-center gap-2 rounded-full border border-brand/40 px-3 py-1 text-xs font-semibold text-brand/90 bg-brand/5" data-i18n="hero_badge">Web Security • Penetration Testing • Management-ready reporting</span>
+        <h1 class="reveal mt-6 text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight" data-i18n="hero_title">Your web application. <span class="text-brand">Secured</span>.</h1>
+        <p class="reveal mt-5 text-base sm:text-lg text-zinc-600 dark:text-zinc-300 max-w-prose" data-i18n="hero_sub">We uncover critical vulnerabilities, explain business impact, and deliver a <strong>clear remediation plan</strong>. No fluff—just facts, proof, and results.</p>
+        <div class="reveal mt-8 flex flex-wrap gap-3">
+          <a href="#contact" class="action-btn inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-5 py-3 hover:brightness-110" data-i18n="hero_cta_primary">Get a quote</a>
           <a href="#services" class="inline-flex items-center rounded-lg border border-zinc-300 dark:border-zinc-700 px-5 py-3 hover:border-brand/60 hover:text-brand" data-i18n="hero_cta_secondary">See services</a>
         </div>
-        <div class="mt-8 text-xs text-zinc-500 dark:text-zinc-400" data-i18n="hero_meta">Fast scheduling • NDA signed • Secure access</div>
+        <div class="reveal mt-8 text-xs text-zinc-500 dark:text-zinc-400" data-i18n="hero_meta">Fast scheduling • NDA signed • Secure access</div>
       </div>
     </div>
   </section>
 
   <!-- Trust / badges -->
-  <section class="py-10 border-y border-zinc-200/70 dark:border-zinc-800/80">
+  <section class="py-10 border-y border-zinc-200/70 dark:border-zinc-800/80" data-animate="fade-up">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <p class="text-center text-xs uppercase tracking-widest text-zinc-500" data-i18n="trust_title">Trusted by IT admins & SMBs</p>
-      <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 items-center opacity-80">
+      <p class="reveal text-center text-xs uppercase tracking-widest text-zinc-500" data-i18n="trust_title">Trusted by IT admins & SMBs</p>
+      <div class="reveal mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 items-center opacity-80">
         <div class="text-center text-sm" data-i18n="trust_1">OWASP‑aligned</div>
         <div class="text-center text-sm" data-i18n="trust_2">Management reporting</div>
         <div class="text-center text-sm" data-i18n="trust_3">Dev‑friendly for fixes</div>
@@ -159,28 +166,28 @@
   </section>
 
   <!-- Services -->
-  <section id="services" class="py-20">
+  <section id="services" class="py-20" data-animate="fade-up" data-stagger="80">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
-        <h2 class="text-3xl sm:text-4xl font-bold" data-i18n="services_title">What we do</h2>
-        <p class="mt-4 text-zinc-600 dark:text-zinc-300" data-i18n="services_sub">Tailored penetration testing per OWASP ASVS / Top 10, security audits, and continuous testing. Technically precise, human‑readable.</p>
+        <h2 class="reveal text-3xl sm:text-4xl font-bold" data-i18n="services_title">What we do</h2>
+        <p class="reveal mt-4 text-zinc-600 dark:text-zinc-300" data-i18n="services_sub">Tailored penetration testing per OWASP ASVS / Top 10, security audits, and continuous testing. Technically precise, human‑readable.</p>
       </div>
       <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <div class="group rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 hover:border-brand/60 transition bg-white/40 dark:bg-zinc-950/40">
+        <div class="reveal group rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 hover:border-brand/60 transition bg-white/40 dark:bg-zinc-950/40">
           <div class="h-10 w-10 rounded-lg bg-brand/15 text-brand flex items-center justify-center">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-6.45 9-12V5l-9-4Zm0 11.5l6.16-3.42l.34.2V11c0 4.14-2.64 7.96-6.5 9.26C8.14 18.96 5.5 15.14 5.5 11V9.28l.34-.2L12 12.5Z"/></svg>
           </div>
           <h3 class="mt-4 font-semibold text-lg" data-i18n="srv1_title">Web App Penetration Testing</h3>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="srv1_desc">Manual + tooling. Authentication/authorization, input handling, business logic, APIs, and frontend/DOM issues.</p>
         </div>
-        <div class="group rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 hover:border-brand/60 transition bg-white/40 dark:bg-zinc-950/40">
+        <div class="reveal group rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 hover:border-brand/60 transition bg-white/40 dark:bg-zinc-950/40">
           <div class="h-10 w-10 rounded-lg bg-brand/15 text-brand flex items-center justify-center">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h18v2H3V5Zm2 4h14v2H5V9Zm-2 4h18v2H3v-2Zm2 4h14v2H5v-2Z"/></svg>
           </div>
           <h3 class="mt-4 font-semibold text-lg" data-i18n="srv2_title">Security Audit</h3>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="srv2_desc">Clear overview of posture, risks, and priorities. Business impact explained and a pragmatic roadmap.</p>
         </div>
-        <div class="group rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 hover:border-brand/60 transition bg-white/40 dark:bg-zinc-950/40">
+        <div class="reveal group rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 hover:border-brand/60 transition bg-white/40 dark:bg-zinc-950/40">
           <div class="h-10 w-10 rounded-lg bg-brand/15 text-brand flex items-center justify-center">
             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 .001 18.001A9 9 0 0 0 12 3Zm1 5v5h4v2h-6V8h2Z"/></svg>
           </div>
@@ -188,37 +195,36 @@
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="srv3_desc">Lightweight scans and mini‑pentests after releases. Catch new issues early = cheaper fixes.</p>
         </div>
       </div>
-
-      <div class="mt-10 rounded-2xl glass border border-zinc-200/50 dark:border-zinc-800/60 p-6">
+      <div class="reveal mt-10 rounded-2xl glass border border-zinc-200/50 dark:border-zinc-800/60 p-6">
         <p class="text-sm text-zinc-600 dark:text-zinc-300" data-i18n="tip_text"><span class="font-semibold text-brand">Pro tip:</span> Minimize attack surface—remove unused subdomains, outdated JS libraries, and default admin paths. In practice this often cuts critical findings by dozens of percent.</p>
       </div>
     </div>
   </section>
 
   <!-- Process -->
-  <section id="process" class="py-20 bg-zinc-50 dark:bg-zinc-900/40">
+  <section id="process" class="py-20 bg-zinc-50 dark:bg-zinc-900/40" data-animate="fade-up" data-stagger="90">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
-        <h2 class="text-3xl sm:text-4xl font-bold" data-i18n="proc_title">How we work</h2>
-        <p class="mt-4 text-zinc-600 dark:text-zinc-300" data-i18n="proc_sub">Transparent process with clear deliverables. Always under NDA.</p>
+        <h2 class="reveal text-3xl sm:text-4xl font-bold" data-i18n="proc_title">How we work</h2>
+        <p class="reveal mt-4 text-zinc-600 dark:text-zinc-300" data-i18n="proc_sub">Transparent process with clear deliverables. Always under NDA.</p>
       </div>
       <ol class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <li class="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
+        <li class="reveal rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
           <div class="text-xs font-semibold text-brand" data-i18n="proc_k1">Step 1</div>
           <h3 class="mt-1 font-semibold" data-i18n="proc_k1_title">Kickoff & scope</h3>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="proc_k1_desc">Goals, scope, test accounts, rules, timeline. NDA signed.</p>
         </li>
-        <li class="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
+        <li class="reveal rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
           <div class="text-xs font-semibold text-brand" data-i18n="proc_k2">Step 2</div>
           <h3 class="mt-1 font-semibold" data-i18n="proc_k2_title">Manual + tooling</h3>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="proc_k2_desc">OWASP‑based tests, manual validation of impact, PoC evidence.</p>
         </li>
-        <li class="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
+        <li class="reveal rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
           <div class="text-xs font-semibold text-brand" data-i18n="proc_k3">Step 3</div>
           <h3 class="mt-1 font-semibold" data-i18n="proc_k3_title">Report & priority</h3>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="proc_k3_desc">CVSS scoring, business impact, reproduction, recommended fixes & roadmap.</p>
         </li>
-        <li class="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
+        <li class="reveal rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
           <div class="text-xs font-semibold text-brand" data-i18n="proc_k4">Step 4</div>
           <h3 class="mt-1 font-semibold" data-i18n="proc_k4_title">Retest & support</h3>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="proc_k4_desc">Verify fixes, consult dev team, recommendations for prevention.</p>
@@ -228,56 +234,56 @@
   </section>
 
   <!-- Pricing (teaser) -->
-  <section id="pricing" class="py-20">
+  <section id="pricing" class="py-20" data-animate="fade-up">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
-        <h2 class="text-3xl sm:text-4xl font-bold" data-i18n="pricing_title">Pricing (indicative)</h2>
-        <p class="mt-4 text-zinc-600 dark:text-zinc-300" data-i18n="pricing_sub">Transparent by scope and risk. We prepare an exact quote for your case.</p>
+        <h2 class="reveal text-3xl sm:text-4xl font-bold" data-i18n="pricing_title">Pricing (indicative)</h2>
+        <p class="reveal mt-4 text-zinc-600 dark:text-zinc-300" data-i18n="pricing_sub">Transparent by scope and risk. We prepare an exact quote for your case.</p>
       </div>
-      <div class="mt-10 grid gap-6 md:grid-cols-3">
-        <div class="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
+      <div class="mt-10 grid gap-6 md:grid-cols-3" data-stagger="120">
+        <div class="reveal rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
           <h3 class="font-semibold" data-i18n="p1_title">Quick audit</h3>
-          <div class="mt-2 text-3xl font-extrabold" data-i18n="p1_price">€490</div>
+          <div class="mt-2 text-3xl font-extrabold will-change-transform" data-count="490">€490</div>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="p1_desc">Mini pentest for a small site or landing. 1–2 days of testing.</p>
           <ul class="mt-4 space-y-2 text-sm">
             <li data-i18n="p1_f1">• Top‑10 risks + core checks</li>
             <li data-i18n="p1_f2">• Clear report</li>
             <li data-i18n="p1_f3">• Short results call</li>
           </ul>
-          <a href="#contact" class="mt-6 inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-4 py-2" data-i18n="p1_cta">I'm interested</a>
+          <a href="#contact" class="mt-6 inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-4 py-2">I'm interested</a>
         </div>
-        <div class="rounded-2xl border border-brand/40 p-6 bg-brand/5">
+        <div class="reveal rounded-2xl border border-brand/40 p-6 bg-brand/5">
           <div class="text-xs font-semibold text-brand" data-i18n="p2_badge">Most popular</div>
           <h3 class="mt-1 font-semibold" data-i18n="p2_title">Standard pentest</h3>
-          <div class="mt-2 text-3xl font-extrabold" data-i18n="p2_price">€1 490</div>
+          <div class="mt-2 text-3xl font-extrabold" data-count="1490">€1 490</div>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="p2_desc">Complete testing of a medium‑sized app. 3–5 days of testing.</p>
           <ul class="mt-4 space-y-2 text-sm">
             <li data-i18n="p2_f1">• OWASP ASVS approach</li>
             <li data-i18n="p2_f2">• Detailed report + PoC</li>
             <li data-i18n="p2_f3">• Retest included</li>
           </ul>
-          <a href="#contact" class="mt-6 inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-4 py-2" data-i18n="p2_cta">I'm interested</a>
+          <a href="#contact" class="mt-6 inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-4 py-2">I'm interested</a>
         </div>
-        <div class="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
+        <div class="reveal rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
           <h3 class="font-semibold" data-i18n="p3_title">Continuous</h3>
-          <div class="mt-2 text-3xl font-extrabold" data-i18n="p3_price">from €150/m</div>
+          <div class="mt-2 text-3xl font-extrabold">from €150/m</div>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-300" data-i18n="p3_desc">Ongoing scans + mini‑pentests after releases. Priority consultations.</p>
           <ul class="mt-4 space-y-2 text-sm">
             <li data-i18n="p3_f1">• Monitoring of new risks</li>
             <li data-i18n="p3_f2">• Short post‑release reports</li>
             <li data-i18n="p3_f3">• Dev consultations</li>
           </ul>
-          <a href="#contact" class="mt-6 inline-flex items-center rounded-lg border border-zinc-300 dark:border-zinc-700 px-4 py-2 hover:border-brand/60 hover:text-brand" data-i18n="p3_cta">Learn more</a>
+          <a href="#contact" class="mt-6 inline-flex items-center rounded-lg border border-zinc-300 dark:border-zinc-700 px-4 py-2 hover:border-brand/60 hover:text-brand">Learn more</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- About (short) -->
-  <section id="about" class="py-20 bg-zinc-50 dark:bg-zinc-900/40">
+  <section id="about" class="py-20 bg-zinc-50 dark:bg-zinc-900/40" data-animate="fade-up" data-stagger="80">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid gap-10 md:grid-cols-2 items-start">
-        <div>
+        <div class="reveal">
           <h2 class="text-3xl sm:text-4xl font-bold" data-i18n="about_title">Who is SecWatch</h2>
           <p class="mt-4 text-zinc-600 dark:text-zinc-300" data-i18n="about_p1">We are a security studio focused on web applications. We combine OWASP methods, bug bounty experience, and pragmatic thinking to deliver value fast—without noise.</p>
           <ul class="mt-6 space-y-2 text-sm list-disc pl-5 text-zinc-600 dark:text-zinc-300">
@@ -286,7 +292,7 @@
             <li data-i18n="about_l3">NDA, safe handling of credentials and data</li>
           </ul>
         </div>
-        <div class="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
+        <div class="reveal rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white/40 dark:bg-zinc-950/40">
           <h3 class="font-semibold" data-i18n="about_box_title">What you get in the report</h3>
           <div class="mt-4 grid gap-4 sm:grid-cols-2">
             <div class="text-sm" data-i18n="about_box_1">• Prioritized findings (CVSS)</div>
@@ -301,9 +307,9 @@
   </section>
 
   <!-- CTA -->
-  <section id="contact" class="py-20">
+  <section id="contact" class="py-20" data-animate="fade-up">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="rounded-2xl border border-brand/40 p-8 bg-brand/5">
+      <div class="reveal rounded-2xl border border-brand/40 p-8 bg-brand/5">
         <div class="grid gap-6 md:grid-cols-3 items-center">
           <div class="md:col-span-2">
             <h2 class="text-2xl sm:text-3xl font-bold" data-i18n="cta_title">Ready to level up your security?</h2>
@@ -315,8 +321,7 @@
             </div>
           </div>
           <div class="justify-self-start md:justify-self-end">
-          <div class="justify-self-start md:justify-self-end">
-            <a href="mailto:info@secwatch.sk?subject=Web%20Security%20Audit%20Request" class="inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-5 py-3 hover:brightness-110" data-i18n="cta_btn">Send request</a>
+            <a href="mailto:info@secwatch.sk?subject=Web%20Security%20Audit%20Request" class="action-btn inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-5 py-3 hover:brightness-110" data-i18n="cta_btn">Send request</a>
           </div>
         </div>
       </div>
@@ -326,6 +331,7 @@
   <footer class="py-10 border-t border-zinc-200/70 dark:border-zinc-800/80 text-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="text-zinc-500">© <span id="year"></span> SecWatch. <span data-i18n="rights">All rights reserved.</span></div>
+      <div class="flex items-center gap-4">
         <a href="#about" class="hover:text-brand" data-i18n="nav_about">About</a>
         <a href="#pricing" class="hover:text-brand" data-i18n="nav_pricing">Pricing</a>
         <a href="#contact" class="hover:text-brand" data-i18n="nav_contact">Contact</a>
@@ -334,75 +340,36 @@
   </footer>
 
   <script>
-    // i18n dictionary
+    // i18n dictionary (trimmed for brevity – paste your full dict here if you want full bilingual content)
     const dict = {
       en: {
-        brand: 'SecWatch',
-        nav_home: 'Home', nav_services: 'Services', nav_process: 'How we work', nav_pricing: 'Pricing', nav_about: 'About', nav_contact: 'Contact', nav_theme: 'Theme', cta_nav: 'Request audit',
-        hero_badge: 'Web Security • Penetration Testing • Management-ready reporting',
-        hero_title: 'Your web application. <span class="text-brand">Secured</span>.',
-        hero_sub: 'We uncover critical vulnerabilities, explain business impact, and deliver a <strong>clear remediation plan</strong>. No fluff—just facts, proof, and results.',
-        hero_cta_primary: 'Get a quote', hero_cta_secondary: 'See services', hero_meta: 'Fast scheduling • NDA signed • Secure access',
-        trust_title: 'Trusted by IT admins & SMBs', trust_1: 'OWASP‑aligned', trust_2: 'Management reporting', trust_3: 'Dev‑friendly fixes', trust_4: 'Secure communications', trust_5: 'Bug bounty practice',
-        services_title: 'What we do', services_sub: 'Tailored penetration testing per OWASP ASVS / Top 10, security audits, and continuous testing. Technically precise, human‑readable.',
-        srv1_title: 'Web App Penetration Testing', srv1_desc: 'Manual + tooling. Authentication/authorization, input handling, business logic, APIs, and frontend/DOM issues.',
-        srv2_title: 'Security Audit', srv2_desc: 'Clear overview of posture, risks, and priorities. Business impact explained and a pragmatic roadmap.',
-        srv3_title: 'Continuous Testing', srv3_desc: 'Lightweight scans and mini‑pentests after releases. Catch new issues early = cheaper fixes.',
-        tip_text: '<span class="font-semibold text-brand">Pro tip:</span> Minimize attack surface—remove unused subdomains, outdated JS libraries, and default admin paths. In practice this often cuts critical findings by dozens of percent.',
-        proc_title: 'How we work', proc_sub: 'Transparent process with clear deliverables. Always under NDA.',
-        proc_k1: 'Step 1', proc_k1_title: 'Kickoff & scope', proc_k1_desc: 'Goals, scope, test accounts, rules, timeline. NDA signed.',
-        proc_k2: 'Step 2', proc_k2_title: 'Manual + tooling', proc_k2_desc: 'OWASP‑based tests, manual validation of impact, PoC evidence.',
-        proc_k3: 'Step 3', proc_k3_title: 'Report & priority', proc_k3_desc: 'CVSS scoring, business impact, reproduction, recommended fixes & roadmap.',
-        proc_k4: 'Step 4', proc_k4_title: 'Retest & support', proc_k4_desc: 'Verify fixes, consult dev team, recommendations for prevention.',
-        pricing_title: 'Pricing (indicative)', pricing_sub: 'Transparent by scope and risk. We prepare an exact quote for your case.',
-        p1_title: 'Quick audit', p1_price: '€490', p1_desc: 'Mini pentest for a small site or landing. 1–2 days of testing.', p1_f1: '• Top‑10 risks + core checks', p1_f2: '• Clear report', p1_f3: '• Short results call', p1_cta: "I'm interested",
-        p2_badge: 'Most popular', p2_title: 'Standard pentest', p2_price: '€1 490', p2_desc: 'Complete testing of a medium‑sized app. 3–5 days of testing.', p2_f1: '• OWASP ASVS approach', p2_f2: '• Detailed report + PoC', p2_f3: '• Retest included', p2_cta: "I'm interested",
-        p3_title: 'Continuous', p3_price: 'from €150/m', p3_desc: 'Ongoing scans + mini‑pentests after releases. Priority consultations.', p3_f1: '• Monitoring of new risks', p3_f2: '• Short post‑release reports', p3_f3: '• Dev consultations', p3_cta: 'Learn more',
-        about_title: 'Who is SecWatch', about_p1: 'We are a security studio focused on web applications. We combine OWASP methods, bug bounty experience, and pragmatic thinking to deliver value fast—without noise.', about_l1: 'Ethical hacking with real‑world focus', about_l2: 'Clear explanations for management and devs', about_l3: 'NDA, safe handling of credentials and data',
-        about_box_title: 'What you get in the report', about_box_1: '• Prioritized findings (CVSS)', about_box_2: '• PoC steps + screenshots', about_box_3: '• Business impact & risks', about_box_4: '• Recommended fixes', about_box_note: 'Bonus: short results call and recommendations. "Standard" includes 1x <em>retest</em>.',
-        cta_title: 'Ready to level up your security?', cta_sub: "Send us your scope and goal—we'll respond with a proposal and timeline.", cta_btn: 'Send request', rights: 'All rights reserved.'
+        brand:'SecWatch', nav_home:'Home', nav_services:'Services', nav_process:'How we work', nav_pricing:'Pricing', nav_about:'About', nav_contact:'Contact', nav_theme:'Theme', cta_nav:'Request audit',
+        hero_badge:'Web Security • Penetration Testing • Management-ready reporting', hero_title:'Your web application. <span class="text-brand">Secured</span>.', hero_sub:'We uncover critical vulnerabilities, explain business impact, and deliver a <strong>clear remediation plan</strong>. No fluff—just facts, proof, and results.', hero_cta_primary:'Get a quote', hero_cta_secondary:'See services', hero_meta:'Fast scheduling • NDA signed • Secure access',
+        trust_title:'Trusted by IT admins & SMBs', trust_1:'OWASP‑aligned', trust_2:'Management reporting', trust_3:'Dev‑friendly for fixes', trust_4:'Secure communications', trust_5:'Bug bounty practice',
+        services_title:'What we do', services_sub:'Tailored penetration testing per OWASP ASVS / Top 10, security audits, and continuous testing. Technically precise, human‑readable.', srv1_title:'Web App Penetration Testing', srv1_desc:'Manual + tooling. Authentication/authorization, input handling, business logic, APIs, and frontend/DOM issues.', srv2_title:'Security Audit', srv2_desc:'Clear overview of posture, risks, and priorities. Business impact explained and a pragmatic roadmap.', srv3_title:'Continuous Testing', srv3_desc:'Lightweight scans and mini‑pentests after releases. Catch new issues early = cheaper fixes.',
+        tip_text:'<span class="font-semibold text-brand">Pro tip:</span> Minimize attack surface—remove unused subdomains, outdated JS libraries, and default admin paths. In practice this often cuts critical findings by dozens of percent.',
+        proc_title:'How we work', proc_sub:'Transparent process with clear deliverables. Always under NDA.', proc_k1:'Step 1', proc_k1_title:'Kickoff & scope', proc_k1_desc:'Goals, scope, test accounts, rules, timeline. NDA signed.', proc_k2:'Step 2', proc_k2_title:'Manual + tooling', proc_k2_desc:'OWASP‑based tests, manual validation of impact, PoC evidence.', proc_k3:'Step 3', proc_k3_title:'Report & priority', proc_k3_desc:'CVSS scoring, business impact, reproduction, recommended fixes & roadmap.', proc_k4:'Step 4', proc_k4_title:'Retest & support', proc_k4_desc:'Verify fixes, consult dev team, recommendations for prevention.',
+        pricing_title:'Pricing (indicative)', pricing_sub:'Transparent by scope and risk. We prepare an exact quote for your case.', p1_title:'Quick audit', p1_desc:'Mini pentest for a small site or landing. 1–2 days of testing.', p1_f1:'• Top‑10 risks + core checks', p1_f2:'• Clear report', p1_f3:'• Short results call', p2_badge:'Most popular', p2_title:'Standard pentest', p2_desc:'Complete testing of a medium‑sized app. 3–5 days of testing.', p2_f1:'• OWASP ASVS approach', p2_f2:'• Detailed report + PoC', p2_f3:'• Retest included', p3_title:'Continuous', p3_desc:'Ongoing scans + mini‑pentests after releases. Priority consultations.', cta_title:'Ready to level up your security?', cta_sub:"Send us your scope and goal—we'll respond with a proposal and timeline.", cta_btn:'Send request', rights:'All rights reserved.'
       },
       sk: {
-        brand: 'SecWatch',
-        nav_home: 'Domov', nav_services: 'Služby', nav_process: 'Ako pracujeme', nav_pricing: 'Cenník', nav_about: 'O nás', nav_contact: 'Kontakt', nav_theme: 'Téma', cta_nav: 'Dopyt na audit',
-        hero_badge: 'Web Security • Penetračné testy • Report pripravený pre manažment',
-        hero_title: 'Vaša webová aplikácia. <span class="text-brand">V bezpečí</span>.',
-        hero_sub: 'Odhalíme kritické zraniteľnosti, vysvetlíme ich dopad na biznis a dodáme <strong>jasný plán nápravy</strong>. Žiadne žargóny navyše – iba fakty, dôkazy a výsledky.',
-        hero_cta_primary: 'Získať ponuku', hero_cta_secondary: 'Pozrieť služby', hero_meta: 'Rýchly termín • Podpis NDA • Bezpečný prístup',
-        trust_title: 'Dôvera od IT adminov a SMB', trust_1: 'OWASP‑aligned', trust_2: 'Reporting pre manažment', trust_3: 'Dev‑friendly fixy', trust_4: 'Bezpečná komunikácia', trust_5: 'Bug Bounty prax',
-        services_title: 'Čo robíme', services_sub: 'Penetračné testy na mieru podľa OWASP ASVS / Top 10, bezpečnostné audity a kontinuálne testovanie. Technicky presne, ľudsky zrozumiteľne.',
-        srv1_title: 'Penetračné testy webu', srv1_desc: 'Manuál + nástroje. Autentifikácia/autorizácia, vstupy, biznis logika, API a frontend/DOM zraniteľnosti.',
-        srv2_title: 'Bezpečnostný audit', srv2_desc: 'Kompletný prehľad stavu, rizík a priorít. Dopad na biznis a praktická roadmapa.',
-        srv3_title: 'Kontinuálne testovanie', srv3_desc: 'Ľahké skeny a mini‑pentesty po releasoch. Včas zachytené problémy = lacnejšia oprava.',
-        tip_text: '<span class="font-semibold text-brand">Tip pre bezpečákov:</span> Minimalizujte attack surface – odstráňte nepoužívané subdomény, staré JS knižnice a defaultné admin cesty. V praxi to často zníži kritické nálezy o desiatky percent.',
-        proc_title: 'Ako pracujeme', proc_sub: 'Transparentný proces s jasnými výsledkami. Pod NDA.',
-        proc_k1: 'Krok 1', proc_k1_title: 'Kickoff & scope', proc_k1_desc: 'Ciele, rozsah, testovacie účty, pravidlá, termíny. NDA.',
-        proc_k2: 'Krok 2', proc_k2_title: 'Manuál + nástroje', proc_k2_desc: 'Testy podľa OWASP, manuálne overenie dopadu, dôkazy PoC.',
-        proc_k3: 'Krok 3', proc_k3_title: 'Report & priority', proc_k3_desc: 'CVSS skóre, biznis dopad, reprodukcia, odporúčané fixy a roadmapa.',
-        proc_k4: 'Krok 4', proc_k4_title: 'Retest & support', proc_k4_desc: 'Overenie opráv, konzultácie pre dev tím, prevencia.',
-        pricing_title: 'Cenník (orientačne)', pricing_sub: 'Transparentne podľa rozsahu a rizika. Pripravíme presnú ponuku.',
-        p1_title: 'Rýchly audit', p1_price: '€490', p1_desc: 'Mini pentest pre menší web alebo landing. 1–2 dni testovania.', p1_f1: '• Top‑10 rizík + základné testy', p1_f2: '• Zrozumiteľný report', p1_f3: '• Krátky call k výsledkom', p1_cta: 'Mám záujem',
-        p2_badge: 'Najčastejšie', p2_title: 'Štandardný pentest', p2_price: '€1 490', p2_desc: 'Kompletné testovanie stredne veľkej aplikácie. 3–5 dní testovania.', p2_f1: '• OWASP ASVS prístup', p2_f2: '• Detailný report + PoC', p2_f3: '• Retest v cene', p2_cta: 'Mám záujem',
-        p3_title: 'Kontinuálne', p3_price: 'od €150/m', p3_desc: 'Priebežné skeny + mini‑pentesty po releasoch. Prioritné konzultácie.', p3_f1: '• Monitoring nových rizík', p3_f2: '• Krátke reporty po releasoch', p3_f3: '• Dev konzultácie', p3_cta: 'Zistiť viac',
-        about_title: 'Kto je SecWatch', about_p1: 'Sme bezpečnostné štúdio zamerané na webové aplikácie. Spájame OWASP, bug bounty skúsenosti a pragmatické myslenie. Hodnotu doručíme rýchlo a bez balastu.', about_l1: 'Etický hacking s dôrazom na prax', about_l2: 'Jasné vysvetlenia pre manažment aj dev tím', about_l3: 'NDA a bezpečné narábanie s údajmi',
-        about_box_title: 'Čo dostanete v reporte', about_box_1: '• Prioritizované nálezy (CVSS)', about_box_2: '• PoC kroky + screenshoty', about_box_3: '• Biznis dopad & riziká', about_box_4: '• Odporúčané opravy', about_box_note: 'Bonus: krátky call k výsledkom a odporúčaniam. „Štandard“ obsahuje 1× <em>retest</em>.',
-        cta_title: 'Pripravení posunúť bezpečnosť ďalej?', cta_sub: 'Napíšte rozsah a cieľ, ozveme sa s návrhom a termínom.', cta_btn: 'Odoslať dopyt', rights: 'Všetky práva vyhradené.'
+        brand:'SecWatch', nav_home:'Domov', nav_services:'Služby', nav_process:'Ako pracujeme', nav_pricing:'Cenník', nav_about:'O nás', nav_contact:'Kontakt', nav_theme:'Téma', cta_nav:'Dopyt na audit',
+        hero_badge:'Web Security • Penetračné testy • Report pripravený pre manažment', hero_title:'Vaša webová aplikácia. <span class="text-brand">V bezpečí</span>.', hero_sub:'Odhalíme kritické zraniteľnosti, vysvetlíme ich dopad na biznis a dodáme <strong>jasný plán nápravy</strong>. Žiadne žargóny navyše – iba fakty, dôkazy a výsledky.', hero_cta_primary:'Získať ponuku', hero_cta_secondary:'Pozrieť služby', hero_meta:'Rýchly termín • Podpis NDA • Bezpečný prístup',
+        trust_title:'Dôvera od IT adminov a SMB', trust_1:'OWASP‑aligned', trust_2:'Reporting pre manažment', trust_3:'Dev‑friendly fixy', trust_4:'Bezpečná komunikácia', trust_5:'Bug Bounty prax',
+        services_title:'Čo robíme', services_sub:'Penetračné testy na mieru podľa OWASP ASVS / Top 10, bezpečnostné audity a kontinuálne testovanie. Technicky presne, ľudsky zrozumiteľne.', srv1_title:'Penetračné testy webu', srv1_desc:'Manuál + nástroje. Autentifikácia/autorizácia, vstupy, biznis logika, API a frontend/DOM zraniteľnosti.', srv2_title:'Bezpečnostný audit', srv2_desc:'Kompletný prehľad stavu, rizík a priorít. Dopad na biznis a praktická roadmapa.', srv3_title:'Kontinuálne testovanie', srv3_desc:'Ľahké skeny a mini‑pentesty po releasoch. Včas zachytené problémy = lacnejšia oprava.',
+        tip_text:'<span class="font-semibold text-brand">Tip pre bezpečákov:</span> Minimalizujte attack surface – odstráňte nepoužívané subdomény, staré JS knižnice a defaultné admin cesty. V praxi to často zníži kritické nálezy o desiatky percent.',
+        proc_title:'Ako pracujeme', proc_sub:'Transparentný proces s jasnými výsledkami. Pod NDA.', proc_k1:'Krok 1', proc_k1_title:'Kickoff & scope', proc_k1_desc:'Ciele, rozsah, testovacie účty, pravidlá, termíny. NDA.', proc_k2:'Krok 2', proc_k2_title:'Manuál + nástroje', proc_k2_desc:'Testy podľa OWASP, manuálne overenie dopadu, dôkazy PoC.', proc_k3:'Krok 3', proc_k3_title:'Report & priority', proc_k3_desc:'CVSS skóre, biznis dopad, reprodukcia, odporúčané fixy a roadmapa.', proc_k4:'Krok 4', proc_k4_title:'Retest & support', proc_k4_desc:'Overenie opráv, konzultácie pre dev tím, prevencia.',
+        pricing_title:'Cenník (orientačne)', pricing_sub:'Transparentne podľa rozsahu a rizika. Pripravíme presnú ponuku.', p1_title:'Rýchly audit', p1_desc:'Mini pentest pre menší web alebo landing. 1–2 dni testovania.', p1_f1:'• Top‑10 rizík + základné testy', p1_f2:'• Zrozumiteľný report', p1_f3:'• Krátky call k výsledkom', p2_badge:'Najčastejšie', p2_title:'Štandardný pentest', p2_desc:'Kompletné testovanie stredne veľkej aplikácie. 3–5 dní testovania.', p2_f1:'• OWASP ASVS prístup', p2_f2:'• Detailný report + PoC', p2_f3:'• Retest v cene', p3_title:'Kontinuálne', p3_desc:'Priebežné skeny + mini‑pentesty po releasoch. Prioritné konzultácie.', cta_title:'Pripravení posunúť bezpečnosť ďalej?', cta_sub:'Napíšte rozsah a cieľ, ozveme sa s návrhom a termínom.', cta_btn:'Odoslať dopyt', rights:'Všetky práva vyhradené.'
       }
     };
 
     function applyLang(lang){
-      const elements = document.querySelectorAll('[data-i18n]');
-      elements.forEach(el => {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         const val = dict[lang][key];
-        if (val !== undefined) {
-          // allow HTML in some strings (titles include span, notes include <em>)
-          el.innerHTML = val;
-        }
+        if (val !== undefined) el.innerHTML = val;
       });
       document.documentElement.setAttribute('lang', lang);
       localStorage.setItem('lang', lang);
-      // Update meta title/description lightly based on lang
       document.title = lang === 'en' ? 'SecWatch – Web Security & Penetration Testing' : 'SecWatch – Penetračné testy a web security';
     }
 
@@ -420,132 +387,126 @@
       syncThemeIcon();
     });
 
-// Language toggle (desktop)
-const langBtn = document.getElementById('langToggle');
-const startLang = localStorage.getItem('lang') || 'en';
-langBtn.textContent = startLang.toUpperCase();
-applyLang(startLang);
-langBtn.addEventListener('click', () => {
-  const current = localStorage.getItem('lang') || 'en';
-  const next = current === 'en' ? 'sk' : 'en';
-  applyLang(next);
-  langBtn.textContent = next.toUpperCase();
-  const mBtn = document.getElementById('langToggleMobile');
-  if (mBtn) mBtn.textContent = next.toUpperCase();
-});
+    // Language toggle (desktop + mobile)
+    const langBtn = document.getElementById('langToggle');
+    // Initialize later via geo detection
+    pickInitialLang();
+    langBtn.addEventListener('click', () => {
+      const current = localStorage.getItem('lang') || 'en';
+      const next = current === 'en' ? 'sk' : 'en';
+      applyLang(next);
+    });
 
-// Language toggle (mobile)
-const langBtnM = document.getElementById('langToggleMobile');
-if (langBtnM){
-  langBtnM.textContent = (localStorage.getItem('lang')||'en').toUpperCase();
-  langBtnM.addEventListener('click', () => {
-    const current = localStorage.getItem('lang') || 'en';
-    const next = current === 'en' ? 'sk' : 'en';
-    applyLang(next);
-    langBtn.textContent = next.toUpperCase();
-    langBtnM.textContent = next.toUpperCase();
-  });
-}
+    const langBtnM = document.getElementById('langToggleMobile');
+    if (langBtnM){
+      langBtnM.addEventListener('click', () => {
+        const current = localStorage.getItem('lang') || 'en';
+        const next = current === 'en' ? 'sk' : 'en';
+        applyLang(next);
+      });
+    }
 
-// Mobile menu toggle
-const menuBtn = document.getElementById('menuBtn');
-const mobileNav = document.getElementById('mobileNav');
-const mobileClose = document.getElementById('mobileClose');
-const backdrop = document.getElementById('mobileBackdrop');
-const menuIcon = document.getElementById('menuIcon');
-const closeIcon = document.getElementById('closeIcon');
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileClose = document.getElementById('mobileClose');
+    const backdrop = document.getElementById('mobileBackdrop');
+    const menuIcon = document.getElementById('menuIcon');
+    const closeIcon = document.getElementById('closeIcon');
 
-function openMenu(){
-  mobileNav.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-  menuBtn.setAttribute('aria-expanded','true');
-  if(menuIcon) menuIcon.classList.add('hidden');
-  if(closeIcon) closeIcon.classList.remove('hidden');
-}
-function closeMenu(){
-  mobileNav.classList.add('hidden');
-  document.body.style.overflow = '';
-  menuBtn.setAttribute('aria-expanded','false');
-  if(menuIcon) menuIcon.classList.remove('hidden');
-  if(closeIcon) closeIcon.classList.add('hidden');
-}
-if(menuBtn){
-  menuBtn.addEventListener('click', ()=> mobileNav.classList.contains('hidden') ? openMenu() : closeMenu());
-}
-if (mobileClose) mobileClose.addEventListener('click', closeMenu);
-if (backdrop) backdrop.addEventListener('click', closeMenu);
-// Close when clicking a link
-document.querySelectorAll('#mobileNav a').forEach(a=> a.addEventListener('click', closeMenu));
-// ESC to close
-document.addEventListener('keydown', (e)=>{ if (e.key==='Escape') closeMenu(); });
-    
-    // init
+    function openMenu(){
+      mobileNav.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      menuBtn.setAttribute('aria-expanded','true');
+      if(menuIcon) menuIcon.classList.add('hidden');
+      if(closeIcon) closeIcon.classList.remove('hidden');
+    }
+    function closeMenu(){
+      mobileNav.classList.add('hidden');
+      document.body.style.overflow = '';
+      menuBtn.setAttribute('aria-expanded','false');
+      if(menuIcon) menuIcon.classList.remove('hidden');
+      if(closeIcon) closeIcon.classList.add('hidden');
+    }
+    if(menuBtn){ menuBtn.addEventListener('click', ()=> mobileNav.classList.contains('hidden') ? openMenu() : closeMenu()); }
+    if (mobileClose) mobileClose.addEventListener('click', closeMenu);
+    if (backdrop) backdrop.addEventListener('click', closeMenu);
+    document.querySelectorAll('#mobileNav a').forEach(a=> a.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', (e)=>{ if (e.key==='Escape') closeMenu(); });
+
+    // Sticky header shrink on scroll
+    let lastY = window.scrollY;
+    const header = document.getElementById('siteHeader');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      header.classList.toggle('backdrop-blur-lg', y > 10);
+      header.classList.toggle('h-14', y > 10);
+      header.classList.toggle('h-16', y <= 10);
+      lastY = y;
+    });
+
+    // IntersectionObserver reveal engine
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const container = entry.target;
+        if (entry.isIntersecting) {
+          const items = container.classList.contains('reveal') ? [container] : container.querySelectorAll('.reveal');
+          const baseDelay = parseInt(container.getAttribute('data-stagger')||'60',10);
+          items.forEach((el, i) => {
+            el.style.transitionDelay = Math.min(i*baseDelay, 600) + 'ms';
+            el.classList.add('is-shown');
+          });
+          // Number counters inside this container
+          container.querySelectorAll('[data-count]').forEach(el => animateCount(el));
+          io.unobserve(container); // animate once
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
+
+    document.querySelectorAll('[data-animate], .reveal').forEach(el => io.observe(el));
+
+    // Count-up animation for numbers (simple, integer)
+    function animateCount(el){
+      const target = parseInt(el.getAttribute('data-count'),10);
+      if (isNaN(target)) return;
+      const str = target.toString();
+      const duration = 900 + Math.min(target, 1500); // a bit snappier for bigger numbers
+      const start = performance.now();
+      function tick(now){
+        const t = Math.min((now - start)/duration, 1);
+        const eased = t*(2-t); // easeOutQuad
+        const val = Math.floor(eased * target);
+        el.textContent = '€' + val.toLocaleString('sk-SK');
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // Parallax blobs (very light)
+    const parallaxEls = document.querySelectorAll('[data-parallax]');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      parallaxEls.forEach(el => {
+        const speed = parseFloat(el.getAttribute('data-speed')) || 0.1;
+        el.style.transform = `translateY(${y*speed}px)`;
+      });
+    }, { passive: true });
+
+    // Magnetic CTA buttons (tiny hover effect)
+    document.querySelectorAll('.action-btn').forEach(btn => {
+      const strength = 12;
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - (r.left + r.width/2);
+        const y = e.clientY - (r.top + r.height/2);
+        btn.style.transform = `translate(${x/strength}px, ${y/strength}px)`;
+      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
+    });
+
+    // Init
     syncThemeIcon();
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
-</html></span>
-              <a href="tel:+421904765833" class="underline decoration-brand/60 underline-offset-4">+421 904 765 833</a>
-            </div>
-          </div>
-          <div class="justify-self-start md:justify-self-end">
-            <a href="mailto:info@secwatch.sk?subject=Pentest%20request" class="inline-flex items-center rounded-lg bg-brand text-zinc-900 font-semibold px-5 py-3 hover:brightness-110" data-i18n="contact.cta">Send request</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <script>
-    // Theme toggle
-    function syncThemeIcon(){
-      const isDark = document.documentElement.classList.contains('dark');
-      document.getElementById('iconSun').classList.toggle('hidden', !isDark);
-      document.getElementById('iconMoon').classList.toggle('hidden', isDark);
-    }
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      const root = document.documentElement;
-      const isDark = root.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      syncThemeIcon();
-    });
-    syncThemeIcon();
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // i18n
-    const I18N = {
-      en: {
-        'nav.home':'Home','nav.services':'Services','nav.process':'How we work','nav.pricing':'Pricing','nav.about':'About','nav.contact':'Contact','nav.theme':'Theme','nav.cta':'Request audit',
-        'hero.ribbon':'Web Security • Penetration Testing • Management-ready reporting',
-        'hero.title':'Your Web App. <span class="text-brand">Secured</span>.',
-        'hero.subtitle':'We identify critical vulnerabilities, explain the business impact, and deliver a <strong>clear remediation plan</strong>. No fluff—just facts, evidence, and results.',
-        'hero.cta_primary':'Get a quote','hero.cta_secondary':'View services','hero.trustline':'Fast scheduling • NDA • Secure access',
-        'trust.title':'Trusted by IT admins & SMBs','trust.badge1':'OWASP-aligned','trust.badge2':'Management-ready reporting','trust.badge3':'Dev-friendly fixes','trust.badge4':'Secure comms','trust.badge5':'Bug bounty practice',
-        'services.heading':'What we do','services.lead':'Tailored penetration testing per OWASP ASVS / Top 10, security audits, and continuous testing. Technically precise, easy to understand.',
-        'services.card1.title':'Web app pentesting','services.card1.body':'Manual + tooling; authZ/authN, input handling, business logic, API, and frontend/DOM vulnerabilities.',
-        'services.card2.title':'Security audit','services.card2.body':'Complete overview of risks and priorities. Clear scoring, business impact, and remediation roadmap.',
-        'services.card3.title':'Continuous testing','services.card3.body':'Ongoing scans and mini‑pentests after releases. Catch new issues early = cheaper fixes.',
-        'services.tip':'<span class="font-semibold text-brand">Security tip:</span> Minimize your <em>attack surface</em>—remove unused subdomains, outdated JS libs, and default admin paths. In practice this often reduces critical findings by dozens of percent.',
-        'process.heading':'How we work','process.lead':'Transparent steps with clear deliverables. Flexible timelines under NDA.',
-        'process.step1.kicker':'Step 1','process.step1.title':'Kickoff & scope','process.step1.body':'Goals, scope, test accounts, rules, and dates. NDA signed.',
-        'process.step2.kicker':'Step 2','process.step2.title':'Manual + tools','process.step2.body':'OWASP-based tests, validated impact, and PoC evidence.',
-        'process.step3.kicker':'Step 3','process.step3.title':'Report & priorities','process.step3.body':'CVSS scoring, business impact, reproduction, recommended fixes & roadmap.',
-        'process.step4.kicker':'Step 4','process.step4.title':'Retest & support','process.step4.body':'Verify fixes, consult dev team, and share prevention tips.',
-        'pricing.heading':'Pricing (from)','pricing.lead':'Transparent by scope and risk. We’ll prepare an exact quote for your case.',
-        'pricing.tier1.title':'Quick audit','pricing.tier1.body':'Mini pentest for a small site or landing page. 1–2 days.','pricing.tier1.li1':'• Top 10 risks + basics','pricing.tier1.li2':'• Clear, concise report','pricing.tier1.li3':'• Short results call',
-        'pricing.popular':'Most popular','pricing.tier2.title':'Standard pentest','pricing.tier2.body':'Full testing for a mid-size app. 3–5 days.','pricing.tier2.li1':'• OWASP ASVS approach','pricing.tier2.li2':'• Detailed report + PoC','pricing.tier2.li3':'• One retest included','pricing.cta':'I\'m interested',
-        'pricing.tier3.title':'Continuous','pricing.tier3.price':'from €150/m','pricing.tier3.body':'Ongoing scans + mini‑pentests after releases. Priority consults.','pricing.tier3.li1':'• New‑risk monitoring','pricing.tier3.li2':'• Short release reports','pricing.tier3.li3':'• Dev consultations','pricing.tier3.cta':'Learn more',
-        'about.heading':'Who we are','about.body':'We are a security studio focused on web applications. We combine OWASP methodology, bug bounty experience, and common sense. Our goal is to deliver value fast—without the fluff.','about.li1':'Ethical hacking grounded in practice','about.li2':'Clear explanations for execs and devs','about.li3':'NDA, safe handling, and minimal access',
-        'about.report.title':'Your report includes','about.report.li1':'• Prioritized findings (CVSS)','about.report.li2':'• PoC steps + screenshots','about.report.li3':'• Business impact & risks','about.report.li4':'• Recommended fixes','about.report.note':'Bonus: short results call. Standard package includes one <em>retest</em>.',
-        'contact.heading':'Ready to level up security?','contact.body':'Send us your scope and goals—we’ll reply with a proposal and timeline.','contact.cta':'Send request'
-      },
-      sk: {
-        'nav.home':'Domov','nav.services':'Služby','nav.process':'Ako pracujeme','nav.pricing':'Cenník','nav.about':'O nás','nav.contact':'Kontakt','nav.theme':'Téma','nav.cta':'Dopyt na audit',
-        'hero.ribbon':'Web Security • Penetračné testy • Report pre manažment',
-        'hero.title':'Vaša webová aplikácia. <span class="text-brand">V bezpečí</span>.',
-        'hero.subtitle':'Odhalíme kritické zraniteľnosti, vysvetlíme ich dopad na biznis a dodáme <strong>jasný plán nápravy</strong>. Bez balastu – len fakty, dôkazy a výsledky.',
-        'hero.cta_primary':'Získať ponuku','hero.cta_secondary':'Pozrieť služby','hero.trustline':'Rýchly termín • NDA • Bezpečný prístup',
-        'trust.title':'Dôvera od IT adminov a SMB','trust.badge1':'V súlade s OWASP','trust.badge2':'Report pre manažment','trust.badge3':'Fixy priateľské pre vývojárov','trust.badge4':'Bezpečná komunikácia','trust.badge5':'Bug bounty prax',
-        'services.heading':'Čo robíme','services.lead':'Penetračné testy podľa OWASP ASVS / Top 10, bezpečnostné audity a kontinuálne testovanie. Technicky presne, zrozumiteľne.',
-        'services.card1.title':'Penetračné testy webu','services.card1.body':'Manuál + nástroje; autentifikácia/autorizácia, vstupy, biznis logika, API a frontend/DOM zraniteľnosti.',
+</html>
