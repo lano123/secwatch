@@ -389,20 +389,27 @@
 
     // Language toggle (desktop + mobile)
     const langBtn = document.getElementById('langToggle');
-    // Initialize later via geo detection
-    pickInitialLang();
+    const startLang = localStorage.getItem('lang') || 'en';
+    langBtn.textContent = startLang.toUpperCase();
+    applyLang(startLang);
     langBtn.addEventListener('click', () => {
       const current = localStorage.getItem('lang') || 'en';
       const next = current === 'en' ? 'sk' : 'en';
       applyLang(next);
+      langBtn.textContent = next.toUpperCase();
+      const mBtn = document.getElementById('langToggleMobile');
+      if (mBtn) mBtn.textContent = next.toUpperCase();
     });
 
     const langBtnM = document.getElementById('langToggleMobile');
     if (langBtnM){
+      langBtnM.textContent = (localStorage.getItem('lang')||'en').toUpperCase();
       langBtnM.addEventListener('click', () => {
         const current = localStorage.getItem('lang') || 'en';
         const next = current === 'en' ? 'sk' : 'en';
         applyLang(next);
+        langBtn.textContent = next.toUpperCase();
+        langBtnM.textContent = next.toUpperCase();
       });
     }
 
