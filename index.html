@@ -541,7 +541,7 @@
         const t = Math.min((now - start)/duration, 1);
         const eased = t*(2-t);
         const val = Math.floor(eased * target);
-        el.textContent = '€' + val.toLocaleString('sk-SK');
+        el.textContent = '$' + val.toLocaleString('sk-SK');
         if (t < 1) requestAnimationFrame(tick);
       }
       requestAnimationFrame(tick);
